@@ -8,6 +8,8 @@
 @include('layouts._header')
 
     <div class="container">
+      @include('shared._messages')
+      <!-- 输出错误信息 -->
       @yield('content')
       @include('layouts._footer')
     </div>
