@@ -19,7 +19,7 @@ class SessionsController extends Controller
            'password' => 'required'
        ]);
 
-       if (Auth::attempt($credentials)) {
+       if (Auth::attempt($credentials,$request->has('remenber'))) {
         // 引用Auth类的attempt方法，查询之前表单提交数据是否与数据库匹配
            session()->flash('success','欢迎回来');
            return redirect()->route('users.show',[Auth::user()]);
@@ -31,5 +31,10 @@ class SessionsController extends Controller
        }
 
        return;
+    }
+    public function destroy(){
+        Auth::logout();
+        session()->flash('success', '您已成功退出！');
+        return redirect('login');
     }
 }
