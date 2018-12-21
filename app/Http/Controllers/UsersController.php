@@ -33,10 +33,14 @@ class UsersController extends Controller
 
     }
     public function edit(User $user){
+        $this->authorize('update', $user);
+        // 通过授权策略方法指定行为，这里为判断当前登录用户和用户模型里对应id一致则通过授权
         return view('users.edit',compact('user'));
     }
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);
+        // 通过授权策略方法指定行为，这里为判断当前登录用户和用户模型里对应id一致则通过授权
         $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
@@ -57,4 +61,14 @@ class UsersController extends Controller
         // 更新完成重定向到用户资料页面并传入用户数据给当前视图
     }
     // 通过用户模型实例$user的update()方法，更新表单内容到数据库
+      public function __construct()
+        {
+            $this->middleware('auth', [
+                'except' => ['show', 'create', 'store']
+            ]);
+
+            $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+        }
 }
