@@ -64,11 +64,18 @@ class UsersController extends Controller
       public function __construct()
         {
             $this->middleware('auth', [
-                'except' => ['show', 'create', 'store']
+                'except' => ['show', 'create', 'store','index']
             ]);
 
             $this->middleware('guest', [
             'only' => ['create']
         ]);
+        }
+        public function index(){
+            // $users = User::all();
+            // 获取User模型的全部数据
+            $users = User::paginate(10);
+            // 获取分页数量的数据
+            return view('users.index',compact('users'));
         }
 }
