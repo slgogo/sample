@@ -78,4 +78,11 @@ class UsersController extends Controller
             // 获取分页数量的数据
             return view('users.index',compact('users'));
         }
+
+         public function destroy(User $user)
+    {
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
+    }
 }
