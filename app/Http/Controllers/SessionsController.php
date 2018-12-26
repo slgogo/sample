@@ -21,12 +21,22 @@ class SessionsController extends Controller
 
        if (Auth::attempt($credentials,$request->has('remenber'))) {
         // 引用Auth类的attempt方法，查询之前表单提交数据是否与数据库匹配
-           session()->flash('success','欢迎回来');
-           $fallback = route('users.show', Auth::user());
+           // session()->flash('success','欢迎回来');
+           // $fallback = route('users.show', Auth::user());
            // 设置变量内容为访问路由地址并传入用户数据给下次重定向使用
-           return redirect()->intended($fallback);
+           // return redirect()->intended($fallback);
            // 当用户重新登录后跳转到之前请求记录的跳转地址
            // return redirect()->route('users.show',[Auth::user()]);
+
+             if(Auth::user()->activated) {
+               session()->flash('success', '欢迎回来！');
+               $fallback = route('users.show', Auth::user());
+               return redirect()->intended($fallback);
+           } else {
+               Auth::logout();
+               session()->flash('warning', '你的账号未激活，请检查邮箱中的注册邮件进行激活。');
+               return redirect('/');
+           }
        } else {
            // 登录失败后的相关操作
           session()->flash('danger','很抱歉，您的邮箱和密码不匹配');
