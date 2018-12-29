@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTokenToUsersTable extends Migration
+class CreateStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddTokenToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('token')->index();
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('content');
+            $table->integer('user_id')->index();
+            $table->index(['created_at']);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddTokenToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            Schema::dropIfExists('token');
-        });
+        Schema::dropIfExists('statuses');
     }
 }
