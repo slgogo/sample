@@ -31,4 +31,9 @@ class UserPolicy
         return $currentUser->is_admin && $currentUser->id !== $user->id;
         // 用户策略判断当前用户有管理权限，且无法删除自己的账号
     }
+
+    public function follow(User $currentUser, User $user)
+    {
+        return $currentUser->id !== $user->id;
+    }
 }
